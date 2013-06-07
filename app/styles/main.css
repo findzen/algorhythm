@@ -1,0 +1,10 @@
+body {
+  background: #222;
+  color:#ccc;
+  font-family: Verdana;
+}
+
+.hero-unit {
+  margin: 50px auto 0 auto;
+  width: 300px;
+}
