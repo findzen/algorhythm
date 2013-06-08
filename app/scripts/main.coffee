@@ -1,10 +1,10 @@
 require.config
   paths:
     jquery: '../bower_components/jquery/jquery'
-    pixi: '../bower_components/pixi/bin/pixi.dev'
+    createjs: '../bower_components/createjs-2013.05.14.min/index'
   shim:
-    pixi:
-      exports: 'PIXI'
+    createjs:
+      exports: 'createjs'
 
 require [
   'app'
@@ -13,7 +13,7 @@ require [
   'use strict'
 
 
-  console.log '____---->aaa', window.app = new App
+  console.log '===>', window.app = new App
   console.log 'Running jQuery %s', $().jquery
 
 
