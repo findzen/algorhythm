@@ -12,8 +12,4 @@ require [
 ], (App, $) ->
   'use strict'
 
-
   console.log '===>', window.app = new App
-  console.log 'Running jQuery %s', $().jquery
-
-
