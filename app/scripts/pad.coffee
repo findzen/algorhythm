@@ -17,9 +17,10 @@ define [
 
     filters: []
 
+    width: 10
+
     height: 10
 
-    width: 10
 
     constructor: (options) ->
       super
