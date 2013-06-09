@@ -1,28 +1,41 @@
 define [
   'createjs'
-], (createjs) ->
+  'filter'
+  'color_matrix'
+  'color_matrix_filter'
+], (createjs, Filter, ColorMatrix, ColorMatrixFilter) ->
   'use strict'
 
-  class Pad extends createjs.Shape
-    defaults:
-      alpha: 100
+  AURA_ZONE_COUNT = 8
 
-      x: 0
-      y: 0
+  class Pad extends createjs.Shape
+    aura: []
+
+    modifier: 1
+
+    fill: 'magenta'
+
+    filters: []
 
     height: 10
+
     width: 10
 
-    constructor: (options = {}) ->
-      # override default properties with provided options
-      # for key, val of @defaults
-      #   @[key] = options[key] or val
-
+    constructor: (options) ->
       super
 
-      @draw()
-      @aura = [0..9]
+      @set options
 
-    draw: ->
-      @graphics.beginFill('#666').drawRect 0, 0, @width, @height
+      @graphics.beginFill(@fill)
+        .drawRect 0, 0, @width, @height
 
+      @generateAura @modifier
+
+    generateAura: (modifier) ->
+      for [1..AURA_ZONE_COUNT]
+        @aura.push Math.random() * modifier
+
+    mod: (options) ->
+      matrix = new ColorMatrix().adjustHue(180).adjustSaturation(100)
+      @filters.push new ColorMatrixFilter matrix
+      @cache -50, -50, 100, 100

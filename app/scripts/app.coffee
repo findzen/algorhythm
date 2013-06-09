@@ -1,35 +1,35 @@
 define [
   'createjs'
   'midijs'
+  'layouts/layout'
   'pad'
-], (createjs, MIDI, Pad) ->
+], (createjs, MIDI, Layout, Pad) ->
   'use strict'
 
   class App
     constructor: ->
       @stage = new createjs.Stage 'testCanvas'
-      @pads = []
 
-      options =
+      @layout = new Layout
+      @stage.addChild @layout
+
+      props =
         x: 0
         y: 0
         width: 50
         height: 50
 
-      for i in [0..199]
-        pad = new Pad
-
+      for i in [0..1]
         if i
-          prev = @pads[i - 1]
-          pad.x = prev.x + options.width
-          pad.y = prev.y + options.height
+          prev = @layout.getChildAt i - 1
+          props.x = prev.x + props.width
+          props.y = prev.y + props.height
 
-        @pads.push pad
-        @stage.addChild pad
+        pad = new Pad props
+
+        @layout.addChild pad
 
       createjs.Ticker.addEventListener 'tick', @draw
 
     draw: =>
-
-
       @stage.update()
