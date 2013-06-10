@@ -13,7 +13,7 @@ define [
 
     modifier: 1
 
-    fill: 'magenta'
+    fill: 'darkred'
 
     filters: []
 

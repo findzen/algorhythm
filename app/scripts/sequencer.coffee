@@ -3,6 +3,6 @@ define [
 ], () ->
   'use strict'
 
-  class Name
+  class Sequencer
     constructor: (args) ->
       # ...
