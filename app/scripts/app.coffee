@@ -4,6 +4,7 @@ define [
   'midijs'
   'layouts/layout'
   'pad'
+  'tempo'
 ], (createjs, Timer, MIDI, Layout, Pad) ->
   'use strict'
 

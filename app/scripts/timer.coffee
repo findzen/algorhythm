@@ -26,12 +26,10 @@ define [
     notesInQueue: []      # the notes that have been put into the web audio,
                                 # and may or may not have played yet. {note, time}
 
-
     constructor: (args) ->
       # ...
 
     init: ->
-      console.log 'init'
       container = document.createElement("div")
       container.className = "container"
       @canvas = document.createElement("canvas")
@@ -49,6 +47,9 @@ define [
       window.onresize = @resetCanvas
       window.requestAnimationFrame @draw # start the drawing loop.
 
+    setTempo: (tempo) ->
+      @tempo = tempo
+
     nextNote: ->
       console.log 'nextNote'
       # Advance current note and time by a 16th note...
@@ -57,22 +58,20 @@ define [
       @nextNoteTime += 0.25 * secondsPerBeat # Add beat length to last beat time
       @current16thNote++ # Advance the beat number, wrap to zero
       @current16thNote = 0  if @current16thNote is 16
-      console.log secondsPerBeat, @tempo, @nextNoteTime, @current16thNote
-
 
     scheduleNote: (beatNumber, time) ->
-      console.log 'scheduleNote', beatNumber, time
       # push the note on the queue, even if we're not playing.
       @notesInQueue.push
         note: beatNumber
         time: time
 
-      return  if (@noteResolution is 1) and (beatNumber % 2) # we're not playing non-8th 16th notes
-      return  if (@noteResolution is 2) and (beatNumber % 4) # we're not playing non-quarter 8th notes
+      return if (@noteResolution is 1) and (beatNumber % 2) # we're not playing non-8th 16th notes
+      return if (@noteResolution is 2) and (beatNumber % 4) # we're not playing non-quarter 8th notes
 
       # create an oscillator
       osc = @audioContext.createOscillator()
       osc.connect @audioContext.destination
+
       if beatNumber % 16 is 0 # beat 0 == low pitch
         osc.frequency.value = 220.0
       else if beatNumber % 4 # quarter notes = medium pitch
@@ -86,7 +85,6 @@ define [
       osc.noteOff time + @noteLength
 
     scheduler: =>
-      console.log 'scheduler'
       # while there are notes that will need to play before the next interval,
       # schedule them and advance the pointer.
       while @nextNoteTime < @audioContext.currentTime + @scheduleAheadTime
@@ -95,7 +93,7 @@ define [
 
       @timerID = window.setTimeout @scheduler, @lookahead
 
-    play: ->
+    play: =>
       console.log 'play'
       @isPlaying = !@isPlaying
 
