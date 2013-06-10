@@ -21,16 +21,14 @@ define [
         width: 50
         height: 50
 
-      count:
-        row: @width / props.height
-        column: @height / props.width
-
       for i in [0..@pads]
-        if i
-          prev = @getChildAt i - 1
-          props.x = prev.x + props.width
-          props.y = prev.y + props.height
-
         pad = new Pad props
         pad.addEventListener 'click', (e) -> e.target.mod()
+
         @addChild pad
+
+        if props.x is @width - props.width
+          props.x = 0
+          props.y += props.height
+        else
+          props.x += props.width

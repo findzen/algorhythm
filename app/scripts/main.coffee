@@ -6,6 +6,7 @@ require.config
     color_matrix: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrix'
     color_matrix_filter: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrixFilter'
     midijs: '../bower_components/MIDI.js/build/MIDI'
+
   shim:
     createjs:
       exports: 'createjs'
