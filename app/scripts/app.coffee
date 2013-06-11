@@ -11,13 +11,17 @@ define [
   class App
     constructor: ->
       @timer = new Timer
-      # @timer.play()
-      # @stage = new createjs.Stage 'canvas'
-      # @layout = new Layout
-      #   width: @stage.canvas.width
-      #   height: @stage.canvas.height
-      # @stage.addChild @layout
-      # createjs.Ticker.addEventListener 'tick', @draw
+      # @timer.tick = (index) =>
+      #   console.log index
+      #   @layout.children[index].mod()
+
+
+      @stage = new createjs.Stage 'canvas'
+      @layout = new Layout
+        width: @stage.canvas.width
+        height: @stage.canvas.height
+      @stage.addChild @layout
+      createjs.Ticker.addEventListener 'tick', @draw
 
       # dat.gui controls
       defaults =

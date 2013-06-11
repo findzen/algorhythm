@@ -32,3 +32,6 @@ define [
           props.y += props.height
         else
           props.x += props.width
+
+    at: (index) ->
+      @pads[index]

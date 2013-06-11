@@ -47,6 +47,8 @@ define [
       window.onresize = @resetCanvas
       window.requestAnimationFrame @draw # start the drawing loop.
 
+    tick: -> # noop
+
     setTempo: (tempo) ->
       @tempo = tempo
 
@@ -54,13 +56,15 @@ define [
       @noteResolution = res
 
     nextNote: ->
-      console.log 'nextNote'
+
       # Advance current note and time by a 16th note...
       secondsPerBeat = 60.0 / @tempo # Notice this picks up the CURRENT
       # tempo value to calculate beat length.
       @nextNoteTime += 0.25 * secondsPerBeat # Add beat length to last beat time
       @current16thNote++ # Advance the beat number, wrap to zero
       @current16thNote = 0  if @current16thNote is 16
+      # console.log 'nextNote', @current16thNote
+      @tick @current16thNote
 
     scheduleNote: (beatNumber, time) ->
       # push the note on the queue, even if we're not playing.
@@ -121,6 +125,7 @@ define [
     draw: =>
       currentNote = @last16thNoteDrawn
       currentTime = @audioContext.currentTime
+      console.log currentNote
 
       while @notesInQueue.length and @notesInQueue[0].time < currentTime
         currentNote = @notesInQueue[0].note
