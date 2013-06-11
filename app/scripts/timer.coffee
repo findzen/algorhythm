@@ -30,22 +30,22 @@ define [
       @init()
 
     init: ->
-      container = document.createElement("div")
-      container.className = "container"
-      @canvas = document.createElement("canvas")
-      @canvasContext = @canvas.getContext("2d")
-      @canvas.width = window.innerWidth
-      @canvas.height = window.innerHeight
-      document.body.appendChild container
-      container.appendChild @canvas
-      @canvasContext.strokeStyle = "#ffffff"
-      @canvasContext.lineWidth = 2
+      # container = document.createElement("div")
+      # container.className = "container"
+      # @canvas = document.createElement("canvas")
+      # @canvasContext = @canvas.getContext("2d")
+      # @canvas.width = window.innerWidth
+      # @canvas.height = window.innerHeight
+      # document.body.appendChild container
+      # container.appendChild @canvas
+      # @canvasContext.strokeStyle = "#ffffff"
+      # @canvasContext.lineWidth = 2
       @audioContext = new webkitAudioContext()
 
       # if we wanted to load audio files, etc., this is where we should do it.
-      window.onorientationchange = @resetCanvas
-      window.onresize = @resetCanvas
-      window.requestAnimationFrame @draw # start the drawing loop.
+      # window.onorientationchange = @resetCanvas
+      # window.onresize = @resetCanvas
+      # window.requestAnimationFrame @draw # start the drawing loop.
 
     tick: -> # noop
 
@@ -56,7 +56,6 @@ define [
       @noteResolution = res
 
     nextNote: ->
-
       # Advance current note and time by a 16th note...
       secondsPerBeat = 60.0 / @tempo # Notice this picks up the CURRENT
       # tempo value to calculate beat length.
@@ -113,38 +112,38 @@ define [
         window.clearTimeout @timerID
         "play"
 
-    resetCanvas: (e) =>
-      console.log 'resetCanvas', @
-      # resize the canvas - but remember - this clears the canvas too.
-      @canvas.width = window.innerWidth
-      @canvas.height = window.innerHeight
+    # resetCanvas: (e) =>
+    #   console.log 'resetCanvas', @
+    #   # resize the canvas - but remember - this clears the canvas too.
+    #   @canvas.width = window.innerWidth
+    #   @canvas.height = window.innerHeight
 
-      #make sure we scroll to the top left.
-      window.scrollTo 0, 0
+    #   #make sure we scroll to the top left.
+    #   window.scrollTo 0, 0
 
-    draw: =>
-      currentNote = @last16thNoteDrawn
-      currentTime = @audioContext.currentTime
-      # console.log currentNote
+    # draw: =>
+    #   currentNote = @last16thNoteDrawn
+    #   currentTime = @audioContext.currentTime
+    #   # console.log currentNote
 
-      while @notesInQueue.length and @notesInQueue[0].time < currentTime
-        currentNote = @notesInQueue[0].note
-        @notesInQueue.splice 0, 1 # remove note from queue
+    #   while @notesInQueue.length and @notesInQueue[0].time < currentTime
+    #     currentNote = @notesInQueue[0].note
+    #     @notesInQueue.splice 0, 1 # remove note from queue
 
-      # We only need to draw if the note has moved.
-      unless @last16thNoteDrawn is currentNote
-        x = Math.floor(@canvas.width / 18)
-        @canvasContext.clearRect 0, 0, @canvas.width, @canvas.height
-        i = 0
+    #   # We only need to draw if the note has moved.
+    #   unless @last16thNoteDrawn is currentNote
+    #     x = Math.floor(@canvas.width / 18)
+    #     @canvasContext.clearRect 0, 0, @canvas.width, @canvas.height
+    #     i = 0
 
-        while i < 16
-          @canvasContext.fillStyle = (if (currentNote is i) then ((if (currentNote % 4 is 0) then "red" else "blue")) else "black")
-          @canvasContext.fillRect x * (i + 1), x, x / 2, x / 2
-          i++
-        @last16thNoteDrawn = currentNote
+    #     while i < 16
+    #       @canvasContext.fillStyle = (if (currentNote is i) then ((if (currentNote % 4 is 0) then "red" else "blue")) else "black")
+    #       @canvasContext.fillRect x * (i + 1), x, x / 2, x / 2
+    #       i++
+    #     @last16thNoteDrawn = currentNote
 
-      # set up to draw again
-      window.requestAnimationFrame @draw
+    #   # set up to draw again
+    #   window.requestAnimationFrame @draw
 
   # Timer.RESOLUTIONS =
   #   '1/16': 0

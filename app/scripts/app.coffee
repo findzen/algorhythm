@@ -12,9 +12,9 @@ define [
   class App
     constructor: ->
       @timer = new Timer
-      # @timer.tick = (index) =>
-      #   console.log index
-      #   @layout.children[index].mod()
+      @timer.tick = (index) =>
+        console.log index
+        # @layout.children[index].mod()
 
 
       @stage = new createjs.Stage 'canvas'
