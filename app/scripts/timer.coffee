@@ -16,7 +16,7 @@ define [
                                 # This is calculated from lookahead, and overlaps
                                 # with next interval (in case the timer is late)
     nextNoteTime: 0.0     # when the next note is due.
-    noteResolution: 0     # 0 == 16th, 1 == 8th, 2 == quarter note
+    noteResolution: 1     # 0 == 16th, 1 == 8th, 2 == quarter note
     noteLength: 0.05      # length of "beep" (in seconds)
     timerID: 0            # setInterval identifier.
 
@@ -27,7 +27,7 @@ define [
                                 # and may or may not have played yet. {note, time}
 
     constructor: (args) ->
-      # ...
+      @init()
 
     init: ->
       container = document.createElement("div")
@@ -49,6 +49,9 @@ define [
 
     setTempo: (tempo) ->
       @tempo = tempo
+
+    setResolution: (res) ->
+      @noteResolution = res
 
     nextNote: ->
       console.log 'nextNote'
@@ -138,5 +141,8 @@ define [
       # set up to draw again
       window.requestAnimationFrame @draw
 
-
+  # Timer.RESOLUTIONS =
+  #   '1/16': 0
+  #   '1/16': 0
+  #   '1/16': 0
 

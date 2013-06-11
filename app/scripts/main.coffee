@@ -1,6 +1,7 @@
 require.config
   paths:
     jquery: '../bower_components/jquery/jquery'
+    gui: '../bower_components/dat.gui/index'
     createjs: '../bower_components/createjs-2013.05.14.min/index'
     filter: '../bower_components/EaselJS/src/easeljs/filters/Filter'
     color_matrix: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrix'
@@ -8,6 +9,8 @@ require.config
     midijs: '../bower_components/MIDI.js/build/MIDI'
 
   shim:
+    gui:
+      exports: 'dat.GUI'
     createjs:
       exports: 'createjs'
     filter:

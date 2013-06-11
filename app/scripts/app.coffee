@@ -1,23 +1,16 @@
 define [
+  'gui'
   'createjs'
   'timer'
   'midijs'
   'layouts/layout'
   'pad'
-  'tempo'
-], (createjs, Timer, MIDI, Layout, Pad) ->
+], (GUI, createjs, Timer, MIDI, Layout, Pad) ->
   'use strict'
 
   class App
     constructor: ->
       @timer = new Timer
-
-      window.init = @timer.init
-      window.noteResolution = @timer.noteResolution
-      window.tempo = @timer.tempo
-      window.play = @timer.play
-
-      @timer.init()
       # @timer.play()
       # @stage = new createjs.Stage 'canvas'
       # @layout = new Layout
@@ -25,6 +18,28 @@ define [
       #   height: @stage.canvas.height
       # @stage.addChild @layout
       # createjs.Ticker.addEventListener 'tick', @draw
+
+      # dat.gui controls
+      defaults =
+        tempo: 100
+        play: => @timer.play()
+        resolution: '1/8'
+
+      @gui = new GUI
+      @gui.add(defaults, 'tempo')
+        .min(40)
+        .max(200)
+        .step(1)
+        .onChange (val) =>
+          @timer.setTempo val
+      @gui.add(defaults, 'play')
+
+      values = ['1/16', '1/8', '1/4']
+      @gui.add(defaults, 'resolution', ['1/16', '1/8', '1/4'])
+        .onChange (val) =>
+          @timer.setResolution values.indexOf(val)
+
+
 
     draw: =>
       @stage.update()
