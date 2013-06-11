@@ -125,7 +125,7 @@ define [
     draw: =>
       currentNote = @last16thNoteDrawn
       currentTime = @audioContext.currentTime
-      console.log currentNote
+      # console.log currentNote
 
       while @notesInQueue.length and @notesInQueue[0].time < currentTime
         currentNote = @notesInQueue[0].note

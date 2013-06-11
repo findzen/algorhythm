@@ -7,10 +7,13 @@ require.config
     color_matrix: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrix'
     color_matrix_filter: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrixFilter'
     midijs: '../bower_components/MIDI.js/build/MIDI'
+    audiolib: '../bower_components/audiolib.js.0.6.4/audiolib'
 
   shim:
     gui:
       exports: 'dat.GUI'
+    audiolib:
+      exports: 'audioLib'
     createjs:
       exports: 'createjs'
     filter:

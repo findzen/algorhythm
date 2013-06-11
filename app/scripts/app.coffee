@@ -1,11 +1,12 @@
 define [
   'gui'
+  'audiolib'
   'createjs'
   'timer'
   'midijs'
   'layouts/layout'
   'pad'
-], (GUI, createjs, Timer, MIDI, Layout, Pad) ->
+], (GUI, audioLib, createjs, Timer, MIDI, Layout, Pad) ->
   'use strict'
 
   class App
