@@ -6,7 +6,8 @@ define [
   'clock'
   'grid'
   'sequencer'
-], ($, GUI, audioLib, createjs, Clock, Grid, Sequencer) ->
+  'scale'
+], ($, GUI, audioLib, createjs, Clock, Grid, Sequencer, Scale) ->
   'use strict'
 
 
@@ -22,7 +23,7 @@ define [
 
       @grid.change = (col, row, value) =>
         # console.log col, row
-        @seq.set col, row, value
+        @seq.set col, row, Scale.Oriental[value + row]
 
       @stage.addChild @grid
 
@@ -35,6 +36,8 @@ define [
         steps: 8
 
       @setupControls()
+
+
 
     setupControls: ->
       $(document).on 'keyup', (e) =>

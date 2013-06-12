@@ -51,9 +51,6 @@ define [
             MIDI.noteOff 0, note + 50, delay + 0.75
 
 
-
-
-
     play: ->
       @clock.play()
       @
