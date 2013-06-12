@@ -6,10 +6,10 @@ define [
 ], (createjs, Filter, ColorMatrix, ColorMatrixFilter) ->
   'use strict'
 
-  AURA_ZONE_COUNT = 8
+  MATRIX_SIZE = 4
 
   class Cell extends createjs.Shape
-    aura: null
+    matrix: null
 
     # position: [row, col]
     # value: float 0-1
@@ -38,7 +38,7 @@ define [
       @graphics.beginFill(@fill)
         .drawRect 0, 0, @width, @height
 
-      @generateAura @modifier
+      @createMatrix @modifier
 
       @addEventListener 'click', (e) =>
         @toggle()
@@ -47,11 +47,11 @@ define [
     change: (col, row, val) ->
       # noop
 
-    generateAura: (modifier) ->
-      @aura = []
+    createMatrix: (modifier) ->
+      @matrix = []
 
-      for i in [1..AURA_ZONE_COUNT]
-        @aura.push Math.random() * modifier
+      for i in [1..MATRIX_SIZE]
+        @matrix.push Math.round(Math.random())
 
     toggle: ->
       @on = !@on

@@ -59,7 +59,22 @@ define [
       console.log 'update'
 
       for cell in @children
-        for i, val of cell.aura
-          if neighbor = @children[i]
-            neighbor.toggle() if !!Math.round(val)
+        for i, neighbor of @getCellNeighbors.apply @, cell.position
+          if neighbor and !!Math.round cell.matrix[i]
+            neighbor.toggle()
+            neighbor.createMatrix(cell.matrix)
+            cell.createMatrix()
+        # for i, val of cell.matrix
+        #   if neighbor = @children[i]
+        #     neighbor.toggle() if !!Math.round(val)
+
+    getCellNeighbors: (col, row) ->
+      up = @getChildAtCoord(col, row - 1)
+      down = @getChildAtCoord(col, row + 1)
+      left = @getChildAtCoord(col - 1, row)
+      right = @getChildAtCoord(col + 1, row)
+
+      [up, down, left, right]
+
+
 
