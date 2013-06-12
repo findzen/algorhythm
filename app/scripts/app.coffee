@@ -1,33 +1,42 @@
 define [
+  'jquery'
   'gui'
   'audiolib'
   'createjs'
-  'timer'
-  'midijs'
-  'layouts/layout'
-  'pad'
-], (GUI, audioLib, createjs, Timer, MIDI, Layout, Pad) ->
+  'clock'
+  'grid'
+  'sequencer'
+], ($, GUI, audioLib, createjs, Clock, Grid, Sequencer) ->
   'use strict'
 
   class App
     constructor: ->
-      @timer = new Timer
-      @timer.tick = (index) =>
-        console.log index
-        # @layout.children[index].mod()
-
-
       @stage = new createjs.Stage 'canvas'
-      @layout = new Layout
-        width: @stage.canvas.width
-        height: @stage.canvas.height
+      @layout = new Grid
+        rows: 8
+        cols: 8
+        cellWidth: 50
+        cellHeight: 50
       @stage.addChild @layout
       createjs.Ticker.addEventListener 'tick', @draw
+
+      # sequencer
+      @seq = new Sequencer
+        steps: 8
+
+      @setupControls()
+
+    setupControls: ->
+      $(document).on 'keyup', (e) =>
+        switch e.keyCode
+          # space
+          when 32
+            @seq.play()
 
       # dat.gui controls
       defaults =
         tempo: 100
-        play: => @timer.play()
+        play: => @seq.play()
         resolution: '1/8'
 
       @gui = new GUI
@@ -35,16 +44,14 @@ define [
         .min(40)
         .max(200)
         .step(1)
-        .onChange (val) =>
-          @timer.setTempo val
+        .onChange (bpm) =>
+          @seq.tempo bpm
       @gui.add(defaults, 'play')
 
       values = ['1/16', '1/8', '1/4']
       @gui.add(defaults, 'resolution', ['1/16', '1/8', '1/4'])
         .onChange (val) =>
-          @timer.setResolution values.indexOf(val)
-
-
+          @seq.resolution values.indexOf(val)
 
     draw: =>
       @stage.update()

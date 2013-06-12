@@ -8,7 +8,7 @@ define [
 
   AURA_ZONE_COUNT = 8
 
-  class Pad extends createjs.Shape
+  class Cell extends createjs.Shape
     aura: []
 
     modifier: 1
@@ -21,6 +21,9 @@ define [
 
     height: 10
 
+    on: false
+
+    index: -1
 
     constructor: (options) ->
       super
@@ -32,9 +35,15 @@ define [
 
       @generateAura @modifier
 
+      @addEventListener 'click', (e) -> e.target.toggle()
+
     generateAura: (modifier) ->
       for [1..AURA_ZONE_COUNT]
         @aura.push Math.random() * modifier
+
+    toggle: ->
+      @on = !@on
+      @mod()
 
     mod: (options) ->
       matrix = new ColorMatrix().adjustHue(180).adjustSaturation(100)

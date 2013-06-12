@@ -13,7 +13,8 @@
     "soundmanager": "latest",
     "backbone.geppetto": "git://github.com/ModelN/backbone.geppetto.git#~0.5.1",
     "dat.gui": "http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.js",
-    "audiolib.js.0.6.4": "https://github.com/downloads/jussi-kalliokoski/audiolib.js/audiolib.js.0.6.4.zip"
+    "audiolib.js.0.6.4": "https://github.com/downloads/jussi-kalliokoski/audiolib.js/audiolib.js.0.6.4.zip",
+    "music.js": "git://github.com/gregjopa/music.js.git"
   },
   "devDependencies": {}
 }
