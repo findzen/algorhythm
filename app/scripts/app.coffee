@@ -34,14 +34,15 @@ define [
       # sequencer
       @seq = new Sequencer
         steps: 8
-      # @seq.step = (step) =>
-      #   if step is 0 then @grid.update()
+        step: (notes) ->
+          delay = 0 # play one note every quarter second
+          velocity = 127 # how hard the note hits
+          for note in notes
+            if note
+              MIDI.noteOn 0, note, velocity, delay
+              MIDI.noteOff 0, note, delay + 0.75
 
       @setupControls()
-
-
-    gridIndexToNote: (index) ->
-      Scale.Dorian[index]
 
     setupControls: ->
       $(document).on 'keyup', (e) =>

@@ -6,6 +6,7 @@ define [
 
   class Sequencer
     options:
+      step: (notes) ->
       steps: 16
       voices: 8
 
@@ -27,18 +28,8 @@ define [
       @clock = new Clock
         tempo: @options.tempo
         tick: (value) =>
-          delay = 0 # play one note every quarter second
-          # note = 50 # the MIDI note
-          velocity = 127 # how hard the note hits
-          # play the note
-          # MIDI.setVolume 0, 127
-
           @next()
-
-          for note in @sequence[@currentStep]
-            if note
-              MIDI.noteOn 0, note + 50, velocity, delay
-              MIDI.noteOff 0, note + 50, delay + 0.75
+          @options.step @sequence[@currentStep]
 
     play: ->
       @clock.play()
@@ -71,7 +62,7 @@ define [
       @
 
     set: (step, voice, note) ->
-      console.log 'set', step, voice, note
+      # console.log 'set', step, voice, note
       @sequence[step][voice] = note
 
     # todo: Sequence class
