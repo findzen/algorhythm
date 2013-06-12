@@ -68,8 +68,8 @@ define [
         osc.frequency.value = 880.0
 
       # TODO: Once start()/stop() deploys on Safari and iOS, these should be changed.
-      osc.noteOn time
-      osc.noteOff time + @noteLength
+      # osc.noteOn time
+      # osc.noteOff time + @noteLength
 
     scheduler: =>
       # while there are notes that will need to play before the next interval,

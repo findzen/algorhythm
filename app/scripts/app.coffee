@@ -9,6 +9,8 @@ define [
 ], ($, GUI, audioLib, createjs, Clock, Grid, Sequencer) ->
   'use strict'
 
+
+
   class App
     constructor: ->
       @stage = new createjs.Stage 'canvas'
