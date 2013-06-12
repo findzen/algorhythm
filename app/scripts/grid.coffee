@@ -36,12 +36,13 @@ define [
           props.y = spacing * row
 
           cell = new Cell props
-          cell.addEventListener 'click', (e) =>
-            e.target.toggle()
-            console.log e.target.position, e.target.value
-            position = e.target.position
-            value = e.target.value
-            @change.call @, position[0], position[1], value
+          cell.change = (col, row, val) =>
+            @change col, row, val
+          # cell.addEventListener 'click', (e) =>
+          #   e.target.toggle()
+          #   position = e.target.position
+          #   value = e.target.value
+          #   @change.call @, position[0], position[1], value
 
           @addChild cell
 
@@ -53,3 +54,12 @@ define [
 
     getChildAtCoord: (col, row) ->
       @cells[col]?[row]
+
+    update: ->
+      console.log 'update'
+
+      for cell in @children
+        for i, val of cell.aura
+          if neighbor = @children[i]
+            neighbor.toggle() if !!Math.round(val)
+

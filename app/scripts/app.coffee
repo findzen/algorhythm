@@ -23,17 +23,17 @@ define [
 
       @grid.change = (col, row, value) =>
         # console.log col, row
-        @seq.set col, row, Scale.Oriental[value + row]
+        @seq.set col, row, Scale.Oriental[value + row ]
 
       @stage.addChild @grid
-
-
 
       createjs.Ticker.addEventListener 'tick', @draw
 
       # sequencer
       @seq = new Sequencer
         steps: 8
+      @seq.step = (step) =>
+        if step is 0 then @grid.update()
 
       @setupControls()
 

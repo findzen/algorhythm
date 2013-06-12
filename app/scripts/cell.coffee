@@ -9,7 +9,7 @@ define [
   AURA_ZONE_COUNT = 8
 
   class Cell extends createjs.Shape
-    aura: []
+    aura: null
 
     # position: [row, col]
     # value: float 0-1
@@ -34,21 +34,30 @@ define [
 
       @set options
 
+
       @graphics.beginFill(@fill)
         .drawRect 0, 0, @width, @height
 
       @generateAura @modifier
 
-      # @addEventListener 'click', (e) -> e.target.toggle()
+      @addEventListener 'click', (e) =>
+        @toggle()
+
+
+    change: (col, row, val) ->
+      # noop
 
     generateAura: (modifier) ->
-      for [1..AURA_ZONE_COUNT]
+      @aura = []
+
+      for i in [1..AURA_ZONE_COUNT]
         @aura.push Math.random() * modifier
 
     toggle: ->
       @on = !@on
       @value = Number(@on)
       @alpha = Number(!@on) + 0.5
+      @change @position[0], @position[1], @value
 
     mod: (options) ->
       matrix = new ColorMatrix().adjustHue(180).adjustSaturation(100)

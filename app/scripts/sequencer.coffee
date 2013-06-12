@@ -9,7 +9,7 @@ define [
       steps: 16
 
     sequence: []
-    step: 0
+    currentStep: 0
 
     constructor: (options) ->
       @options = _.defaults options, @options
@@ -42,9 +42,9 @@ define [
         # play the note
         # MIDI.setVolume 0, 127
 
-        @next()
+        @next().step(index)
 
-        for note in @sequence[@step]
+        for note in @sequence[@currentStep]
           # console.log note
           if note
             MIDI.noteOn 0, note + 50, velocity, delay
@@ -61,6 +61,9 @@ define [
     stop: ->
       @
 
+    step: ->
+      # noop
+
     steps: (steps) ->
       @options.steps = steps
       @
@@ -74,10 +77,10 @@ define [
       @
 
     next: ->
-      if @step < @options.steps - 1
-        @step++
+      if @currentStep < @options.steps - 1
+        @currentStep++
       else
-        @step = 0
+        @currentStep = 0
       @
 
     set: (step, note, value) ->
