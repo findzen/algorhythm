@@ -18,7 +18,6 @@ define [
 
     constructor: (options = {}) ->
       @options = _.defaults options, @options
-      # @set options
       super
 
       props =

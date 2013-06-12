@@ -1,9 +1,12 @@
 define [
-
-], () ->
+  'lodash'
+], (_) ->
   'use strict'
 
   class Clock
+    options:
+      tick: (value) ->
+
     audioContext: null
     isPlaying: false      # Are we currently playing?
     startTime: null          # The start time of the entire sequence.
@@ -22,13 +25,12 @@ define [
     notesInQueue: []      # the notes that have been put into the web audio,
                                 # and may or may not have played yet. {note, time}
 
-    constructor: (args) ->
+    constructor: (options) ->
+      @options = _.defaults options, @options
       @init()
 
     init: ->
       @audioContext = new webkitAudioContext()
-
-    tick: -> # noop
 
     setTempo: (bpm) ->
       @tempo = bpm
@@ -44,7 +46,7 @@ define [
       @current16thNote++ # Advance the beat number, wrap to zero
       @current16thNote = 0  if @current16thNote is 16
       # console.log 'nextNote', @current16thNote
-      @tick @current16thNote
+      @options.tick @current16thNote
 
     scheduleNote: (beatNumber, time) ->
       # push the note on the queue, even if we're not playing.
@@ -59,13 +61,13 @@ define [
       osc = @audioContext.createOscillator()
       osc.connect @audioContext.destination
 
-      if beatNumber % 16 is 0 # beat 0 == low pitch
-        osc.frequency.value = 220.0
-      else if beatNumber % 4 # quarter notes = medium pitch
-        osc.frequency.value = 440.0
-      # other 16th notes = high pitch
-      else
-        osc.frequency.value = 880.0
+      # if beatNumber % 16 is 0 # beat 0 == low pitch
+      #   osc.frequency.value = 220.0
+      # else if beatNumber % 4 # quarter notes = medium pitch
+      #   osc.frequency.value = 440.0
+      # # other 16th notes = high pitch
+      # else
+      #   osc.frequency.value = 880.0
 
       # TODO: Once start()/stop() deploys on Safari and iOS, these should be changed.
       # osc.noteOn time

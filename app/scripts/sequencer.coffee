@@ -10,47 +10,37 @@ define [
       voices: 8
 
     sequence: []
+
     currentStep: 0
 
     constructor: (options) ->
       @options = _.defaults options, @options
-      @steps @options.steps
 
       MIDI.loadPlugin
         soundfontUrl: "assets/"
         instrument: "acoustic_grand_piano"
         callback: ->
-          # delay = 0 # play one note every quarter second
-          # note = 50 # the MIDI note
-          # velocity = 127 # how hard the note hits
-          # # play the note
-          # MIDI.setVolume 0, 127
-          # MIDI.noteOn 0, note, velocity, delay
-          # MIDI.noteOff 0, note, delay + 0.75
 
       @sequence = []
       @sequence.push @newSequence() for i in [1..@options.steps]
-      console.log @sequence, @sequence.steps
 
       @clock = new Clock
         tempo: @options.tempo
+        tick: (value) =>
+          console.log value
+          delay = 0 # play one note every quarter second
+          # note = 50 # the MIDI note
+          velocity = 127 # how hard the note hits
+          # play the note
+          # MIDI.setVolume 0, 127
 
-      @clock.tick = (index) =>
-        # console.log index
-        delay = 0 # play one note every quarter second
-        # note = 50 # the MIDI note
-        velocity = 127 # how hard the note hits
-        # play the note
-        # MIDI.setVolume 0, 127
+          @next().step(value)
 
-        @next().step(index)
-
-        for note in @sequence[@currentStep]
-          # console.log note
-          if note
-            MIDI.noteOn 0, note + 50, velocity, delay
-            MIDI.noteOff 0, note + 50, delay + 0.75
-
+          for note in @sequence[@currentStep]
+            # console.log note
+            if note
+              MIDI.noteOn 0, note + 50, velocity, delay
+              MIDI.noteOff 0, note + 50, delay + 0.75
 
     play: ->
       @clock.play()
@@ -67,6 +57,7 @@ define [
 
     steps: (steps) ->
       @options.steps = steps
+      # if steps > @sequence.length
       @
 
     tempo: (bpm) ->
@@ -90,5 +81,5 @@ define [
 
     # todo: Sequence class
     newSequence: ->
-      null for i in [0..7]
+      null for i in [1..@options.voices]
 
