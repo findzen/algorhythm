@@ -11,6 +11,10 @@ define [
   class Cell extends createjs.Shape
     aura: []
 
+    # position: [row, col]
+    # value: float 0-1
+    value: 0
+
     modifier: 1
 
     fill: 'darkred'
@@ -35,7 +39,7 @@ define [
 
       @generateAura @modifier
 
-      @addEventListener 'click', (e) -> e.target.toggle()
+      # @addEventListener 'click', (e) -> e.target.toggle()
 
     generateAura: (modifier) ->
       for [1..AURA_ZONE_COUNT]
@@ -43,7 +47,8 @@ define [
 
     toggle: ->
       @on = !@on
-      @mod()
+      @value = Number(@on)
+      @alpha = Number(!@on) + 0.5
 
     mod: (options) ->
       matrix = new ColorMatrix().adjustHue(180).adjustSaturation(100)

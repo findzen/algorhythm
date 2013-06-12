@@ -7,7 +7,7 @@ define [
     audioContext: null
     isPlaying: false      # Are we currently playing?
     startTime: null          # The start time of the entire sequence.
-    current16thNote: null        # What note is currently last scheduled?
+    current16thNote: 0        # What note is currently last scheduled?
     tempo: 120.0          # tempo (in beats per minute)
     lookahead: 25.0       # How frequently to call scheduling function
                                 #(in milliseconds)

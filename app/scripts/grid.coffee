@@ -31,15 +31,25 @@ define [
 
       for row in [0..@rows - 1]
         for col in [0..@cols - 1]
-          props.index = row
+          props.position = [col, row]
           props.x = spacing * col
           props.y = spacing * row
 
           cell = new Cell props
+          cell.addEventListener 'click', (e) =>
+            e.target.toggle()
+            console.log e.target.position, e.target.value
+            position = e.target.position
+            value = e.target.value
+            @change.call @, position[0], position[1], value
+
           @addChild cell
 
           @cells[col] ?= []
           @cells[col].push cell
+
+    change: (col, row, val) ->
+      # noop
 
     getChildAtCoord: (col, row) ->
       @cells[col]?[row]

@@ -14,12 +14,20 @@ define [
   class App
     constructor: ->
       @stage = new createjs.Stage 'canvas'
-      @layout = new Grid
+      @grid = new Grid
         rows: 8
         cols: 8
         cellWidth: 50
         cellHeight: 50
-      @stage.addChild @layout
+
+      @grid.change = (col, row, value) =>
+        # console.log col, row
+        @seq.set col, row, value
+
+      @stage.addChild @grid
+
+
+
       createjs.Ticker.addEventListener 'tick', @draw
 
       # sequencer
