@@ -19,7 +19,9 @@ define [
     constructor: (options = {}) ->
       @options = _.defaults options, @options
       super
+      @build()
 
+    build: ->
       props =
         x: 0
         y: 0
@@ -44,8 +46,6 @@ define [
           @cells[col] ?= []
           @cells[col].push cell
 
-
-
     getChildAtCoord: (col, row) ->
       @cells[col]?[row]
 
@@ -60,9 +60,6 @@ define [
             neighbor.toggle()
             neighbor.matrix = cell.matrix
             cell.createMatrix()
-        # for i, val of cell.matrix
-        #   if neighbor = @children[i]
-        #     neighbor.toggle() if !!Math.round(val)
 
     getCellNeighbors: (col, row) ->
       up = @getChildAtCoord(col, row - 1)

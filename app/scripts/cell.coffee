@@ -11,19 +11,18 @@ define [
 
   class Cell extends createjs.Shape
     options:
+      fill: 'darkred'
       change: (col, row, value, active) ->
 
     matrix: null
 
     value: 0
 
-    fill: 'darkred'
-
-    filters: []
-
     width: 10
 
     height: 10
+
+    filters: []
 
     active: false
 
@@ -35,7 +34,7 @@ define [
 
       @set props
 
-      @graphics.beginFill(@fill)
+      @graphics.beginFill(@options.fill)
         .drawRect 0, 0, @width, @height
 
       @createMatrix()

@@ -27,17 +27,15 @@ define [
       @clock = new Clock
         tempo: @options.tempo
         tick: (value) =>
-          console.log value
           delay = 0 # play one note every quarter second
           # note = 50 # the MIDI note
           velocity = 127 # how hard the note hits
           # play the note
           # MIDI.setVolume 0, 127
 
-          @next().step(value)
+          @next()
 
           for note in @sequence[@currentStep]
-            # console.log note
             if note
               MIDI.noteOn 0, note + 50, velocity, delay
               MIDI.noteOff 0, note + 50, delay + 0.75
@@ -51,9 +49,6 @@ define [
 
     stop: ->
       @
-
-    step: ->
-      # noop
 
     steps: (steps) ->
       @options.steps = steps
