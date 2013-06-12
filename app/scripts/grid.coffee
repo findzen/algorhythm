@@ -1,56 +1,51 @@
 define [
+  'lodash'
   'createjs'
   'cell'
-], (createjs, Cell) ->
+], (_, createjs, Cell) ->
   'use strict'
 
   class Grid extends createjs.Container
-    rows: 4
-    cols: 4
-    width: 100
-    height: 100
-    cellWidth: 10
-    cellHeight: 10
-    cellPadding: 2
-    cells:[]
+    options:
+      rows: 4
+      cols: 4
+      cellWidth: 10
+      cellHeight: 10
+      cellPadding: 2
+      change: (col, row, value, active) ->
+
+    cells: []
 
     constructor: (options = {}) ->
-      @set options
+      @options = _.defaults options, @options
+      # @set options
       super
 
       props =
         x: 0
         y: 0
-        width: @cellWidth
-        height: @cellHeight
+        width: @options.cellWidth
+        height: @options.cellHeight
 
-      # @rows = Math.floor @height / (props.height + @cellPadding)
-      # @cols = Math.floor @width / (props.width + @cellPadding)
+      options =
+        change: (col, row, value, active) =>
+          @options.change col, row, value, active
 
-      spacing = @cellPadding + props.width
+      spacing = @options.cellPadding + props.width
 
-      for row in [0..@rows - 1]
-        for col in [0..@cols - 1]
+      for row in [0..@options.rows - 1]
+        for col in [0..@options.cols - 1]
           props.position = [col, row]
           props.x = spacing * col
           props.y = spacing * row
 
-          cell = new Cell props
-          cell.change = (col, row, val) =>
-            @change col, row, val
-          # cell.addEventListener 'click', (e) =>
-          #   e.target.toggle()
-          #   position = e.target.position
-          #   value = e.target.value
-          #   @change.call @, position[0], position[1], value
-
+          cell = new Cell null, props, options
           @addChild cell
 
           @cells[col] ?= []
           @cells[col].push cell
 
-    change: (col, row, val) ->
-      # noop
+
 
     getChildAtCoord: (col, row) ->
       @cells[col]?[row]
@@ -59,10 +54,12 @@ define [
       console.log 'update'
 
       for cell in @children
+        # console.log @getCellNeighbors.apply @, cell.position
         for i, neighbor of @getCellNeighbors.apply @, cell.position
+          # console.log i, neighbor
           if neighbor and !!Math.round cell.matrix[i]
             neighbor.toggle()
-            neighbor.createMatrix(cell.matrix)
+            neighbor.matrix = cell.matrix
             cell.createMatrix()
         # for i, val of cell.matrix
         #   if neighbor = @children[i]

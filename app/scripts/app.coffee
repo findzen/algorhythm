@@ -10,20 +10,22 @@ define [
 ], ($, GUI, audioLib, createjs, Clock, Grid, Sequencer, Scale) ->
   'use strict'
 
-
-
   class App
     constructor: ->
       @stage = new createjs.Stage 'canvas'
+
+      @scale = new Scale 'Dorian'
+
       @grid = new Grid
         rows: 8
         cols: 8
         cellWidth: 50
         cellHeight: 50
-
-      @grid.change = (col, row, value) =>
-        # console.log col, row
-        @seq.set col, row, Scale.Oriental[value + row ]
+        change: (col, row, value, active) =>
+          note = @scale.at(row) if active
+          console.log 'grid change:', col, row, value, active
+          console.log 'note:', note
+          @seq.set col, row, note
 
       @stage.addChild @grid
 
@@ -32,12 +34,14 @@ define [
       # sequencer
       @seq = new Sequencer
         steps: 8
-      @seq.step = (step) =>
-        if step is 0 then @grid.update()
+      # @seq.step = (step) =>
+      #   if step is 0 then @grid.update()
 
       @setupControls()
 
 
+    gridIndexToNote: (index) ->
+      Scale.Dorian[index]
 
     setupControls: ->
       $(document).on 'keyup', (e) =>

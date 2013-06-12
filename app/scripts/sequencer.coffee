@@ -7,6 +7,7 @@ define [
   class Sequencer
     options:
       steps: 16
+      voices: 8
 
     sequence: []
     currentStep: 0
@@ -83,19 +84,11 @@ define [
         @currentStep = 0
       @
 
-    set: (step, note, value) ->
-      console.log 'set', step, note, value
-      # if step < @sequence.length
-      #   @sequence.push @newSequence()
-      @sequence[step][note] = value
-      # if value is 1
-      #   @sequence[step][note] = value
-      # else
-      #   @sequence[step] = null
+    set: (step, voice, note) ->
+      console.log 'set', step, voice, note
+      @sequence[step][voice] = note
 
-      console.log 'seq:', @sequence
-
-    # todo: Sequence clas
+    # todo: Sequence class
     newSequence: ->
       null for i in [0..7]
 
