@@ -3,7 +3,18 @@
   "version": "0.0.0",
   "dependencies": {
     "requirejs": "~2.1.4",
-    "jquery": "~2.0.2"
+    "jquery": "~2.0.2",
+    "createjs-2013.05.14.min": "http://code.createjs.com/createjs-2013.05.14.min.js",
+    "MIDI.js": "git://github.com/mudcube/MIDI.js.git",
+    "html5-audio-editor": "git://github.com/plucked/html5-audio-editor.git",
+    "lodash": "~1.2.1",
+    "backbone": "~1.0.0",
+    "backbone.marionette": "~1.0.3",
+    "soundmanager": "latest",
+    "backbone.geppetto": "git://github.com/ModelN/backbone.geppetto.git#~0.5.1",
+    "dat.gui": "http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.js",
+    "audiolib.js.0.6.4": "https://github.com/downloads/jussi-kalliokoski/audiolib.js/audiolib.js.0.6.4.zip",
+    "music.js": "git://github.com/gregjopa/music.js.git"
   },
   "devDependencies": {}
 }

@@ -12,10 +12,24 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
+     <script src="bower_components/MIDI.js/js/MIDI/AudioDetect.js" type="text/javascript"></script>
+     <script src="bower_components/MIDI.js/js/MIDI/LoadPlugin.js" type="text/javascript"></script>
+     <script src="bower_components/MIDI.js/js/MIDI/Plugin.js" type="text/javascript"></script>
+     <script src="bower_components/MIDI.js/js/MIDI/Player.js" type="text/javascript"></script>
+     <script src="bower_components/MIDI.js/js/Window/DOMLoader.XMLHttp.js" type="text/javascript"></script>
+     <script src="bower_components/MIDI.js/js/Window/DOMLoader.script.js" type="text/javascript"></script>
+     <!-- extras -->
+     <script src="bower_components/MIDI.js/inc/Base64.js" type="text/javascript"></script>
+     <script src="bower_components/MIDI.js/inc/base64binary.js" type="text/javascript"></script>
   </head>
   <body>
-    <div class="container">
-    </div>
+    <!-- <div id="controls">
+      <div><a class="play" onclick="this.innerText = play();">play</a></div>
+      <div id="tempoBox">Tempo: <span id="showTempo">120</span>BPM <input id="tempo" type="range" min="30.0" max="160.0" step="1" value="120" style="height: 20px; width: 200px" onInput="tempo = event.target.value; document.getElementById('showTempo').innerText=tempo;"></div>
+      <div>Resolution:<select onchange="noteResolution = this.selectedIndex;"><option>16th notes<option>8th notes<option>Quarter notes</select></div>
+    </div> -->
+    <canvas id="canvas" width="600" height="400"></canvas>
 
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
@@ -23,10 +37,10 @@
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
-      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-      g.src='//www.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g,s)}(document,'script'));
+      // var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      // (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      // g.src='//www.google-analytics.com/ga.js';
+      // s.parentNode.insertBefore(g,s)}(document,'script'));
     </script>
 
     <!-- build:js scripts/main.js -->
