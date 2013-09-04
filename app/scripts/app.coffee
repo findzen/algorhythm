@@ -7,7 +7,8 @@ define [
   'grid'
   'sequencer'
   'scale'
-], ($, GUI, audioLib, createjs, Clock, Grid, Sequencer, Scale) ->
+  'output'
+], ($, GUI, audioLib, createjs, Clock, Grid, Sequencer, Scale, Output) ->
   'use strict'
 
   class App
@@ -25,22 +26,27 @@ define [
           note = @scale.at Math.abs(row - @grid.options.rows) if active
           console.log 'grid change:', col, row, value, active
           console.log 'note:', note
-          @seq.set col, row, note + 40
+          @seq.set col, row, note + 20
 
       @stage.addChild @grid
 
       createjs.Ticker.addEventListener 'tick', @draw
 
+
+      @output = new Output
+
       # sequencer
       @seq = new Sequencer
         steps: 8
-        step: (notes) ->
+        step: (notes) =>
           delay = 0 # play one note every quarter second
           velocity = 127 # how hard the note hits
           for note in notes
             if note
-              MIDI.noteOn 0, note, velocity, delay
-              MIDI.noteOff 0, note, delay + 0.75
+              # MIDI.noteOn 0, note, velocity, delay
+              # MIDI.noteOff 0, note, delay + 0.75
+              @output.play note, 500
+
 
       @setupControls()
 

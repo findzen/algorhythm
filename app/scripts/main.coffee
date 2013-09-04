@@ -8,8 +8,8 @@ require.config
     filter: '../bower_components/EaselJS/src/easeljs/filters/Filter'
     color_matrix: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrix'
     color_matrix_filter: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrixFilter'
-    midijs: '../bower_components/MIDI.js/build/MIDI'
     audiolib: '../bower_components/audiolib.js.0.6.4/audiolib'
+    midi_utils: '../bower_components/MIDIUtils/src/MIDIUtils'
 
   shim:
     gui:
@@ -26,9 +26,8 @@ require.config
       exports: 'createjs.ColorMatrix'
     color_matrix_filter:
       exports: 'createjs.ColorMatrixFilter'
-    midijs:
-      deps: ['../bower_components/MIDI.js/inc/base64binary']
-      exports: 'MIDI'
+    midi_utils:
+      exports: 'MIDIUtils'
 
 require [
   'app'

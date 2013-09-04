@@ -17,11 +17,6 @@ define [
     constructor: (options) ->
       @options = _.defaults options, @options
 
-      MIDI.loadPlugin
-        soundfontUrl: 'assets/'
-        instrument: 'acoustic_grand_piano'
-        callback: ->
-
       @sequence = []
       @sequence.push @newSequence() for i in [1..@options.steps]
 
