@@ -22,7 +22,7 @@ define [
         cellWidth: 50
         cellHeight: 50
         change: (col, row, value, active) =>
-          note = @scale.at(row) if active
+          note = @scale.at Math.abs(row - @grid.options.rows) if active
           console.log 'grid change:', col, row, value, active
           console.log 'note:', note
           @seq.set col, row, note + 40
