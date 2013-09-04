@@ -25,7 +25,7 @@ define [
           note = @scale.at(row) if active
           console.log 'grid change:', col, row, value, active
           console.log 'note:', note
-          @seq.set col, row, note
+          @seq.set col, row, note + 40
 
       @stage.addChild @grid
 
@@ -73,6 +73,4 @@ define [
 
     draw: =>
       @stage.update()
-
-
 

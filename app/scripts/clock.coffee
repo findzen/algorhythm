@@ -20,12 +20,8 @@ define [
     noteResolution: 1         # 0 == 16th, 1 == 8th, 2 == quarter note
     timerID: 0                # setInterval identifier.
 
-    constructor: (options) ->
+    constructor: (@audioContext, options) ->
       @options = _.defaults options, @options
-      @init()
-
-    init: ->
-      @audioContext = new webkitAudioContext()
 
     setTempo: (bpm) ->
       @tempo = bpm

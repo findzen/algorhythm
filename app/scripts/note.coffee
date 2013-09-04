@@ -1,6 +1,4 @@
-define [
-
-], () ->
+define ->
   'use strict'
 
   # Note to MIDI number table

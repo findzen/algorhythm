@@ -18,14 +18,14 @@ define [
       @options = _.defaults options, @options
 
       MIDI.loadPlugin
-        soundfontUrl: "assets/"
-        instrument: "acoustic_grand_piano"
+        soundfontUrl: 'assets/'
+        instrument: 'acoustic_grand_piano'
         callback: ->
 
       @sequence = []
       @sequence.push @newSequence() for i in [1..@options.steps]
 
-      @clock = new Clock
+      @clock = new Clock new webkitAudioContext,
         tempo: @options.tempo
         tick: (value) =>
           @next()
