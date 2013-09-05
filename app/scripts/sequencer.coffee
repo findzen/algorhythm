@@ -1,11 +1,11 @@
 define [
   'lodash'
-], (_) ->
+  'createjs'
+], (_, createjs) ->
   'use strict'
 
-  class Sequencer
+  class Sequencer extends createjs.EventDispatcher
     options:
-      step: (notes) -> console.log notes
       steps: 16
       voices: 8
 
@@ -20,7 +20,6 @@ define [
 
     steps: (steps) ->
       @options.steps = steps
-      @
 
     next: ->
       if @currentStep < @options.steps - 1
@@ -28,8 +27,9 @@ define [
       else
         @currentStep = 0
 
-      @options.step @sequence[@currentStep]
-      @
+      @dispatchEvent
+        type: 'step'
+        step: @sequence[@currentStep]
 
     set: (step, voice, note) ->
       @sequence[step][voice] = note

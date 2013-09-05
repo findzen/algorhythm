@@ -14,9 +14,7 @@ define [
   class App
     constructor: ->
       @stage = new createjs.Stage 'canvas'
-
       @scale = new Scale 'Dorian'
-
       @grid = new Grid
         rows: 8
         cols: 8
@@ -34,17 +32,14 @@ define [
       @output = new Output
 
       # sequencer
-      @seq = new Sequencer
-        steps: 8
-        step: (notes) =>
-          delay = 0 # play one note every quarter second
-          velocity = 127
-          for note in notes
-            @output.play note, 500 if note
+      @seq = new Sequencer steps: 8
+      @seq.addEventListener 'step', (e) =>
+        for note in e.step
+          @output.play note, 500 if note
 
       # master clock
-      @clock = new Clock new webkitAudioContext,
-        tick: (value) => @seq.next()
+      @clock = new Clock new webkitAudioContext
+      @clock.addEventListener 'tick', => @seq.next()
 
       @setupControls()
 
@@ -53,7 +48,7 @@ define [
         switch e.keyCode
           # space
           when 32
-            @seq.play()
+            @clock.play()
 
       # dat.gui controls
       defaults =

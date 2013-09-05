@@ -1,12 +1,9 @@
 define [
-  'lodash'
-], (_) ->
+  'createjs'
+], (createjs) ->
   'use strict'
 
-  class Clock
-    options:
-      tick: (value) ->
-
+  class Clock extends createjs.EventDispatcher
     audioContext: null
     isPlaying: false          # Are we currently playing?
     startTime: null           # The start time of the entire sequence.
@@ -20,8 +17,7 @@ define [
     noteResolution: 1         # 0 == 16th, 1 == 8th, 2 == quarter note
     timerID: 0                # setInterval identifier.
 
-    constructor: (@audioContext, options) ->
-      @options = _.defaults options, @options
+    constructor: (@audioContext) ->
 
     setTempo: (bpm) ->
       @tempo = bpm
@@ -50,7 +46,7 @@ define [
         else
           beatNumber
 
-      @options.tick value
+      @dispatchEvent 'tick'
 
     scheduler: =>
       # while there are notes that will need to play before the next interval,
@@ -71,9 +67,3 @@ define [
         @scheduler() # kick off scheduling
       else
         window.clearTimeout @timerID
-
-  # Clock.RESOLUTIONS =
-  #   '1/16': 0
-  #   '1/16': 0
-  #   '1/16': 0
-
