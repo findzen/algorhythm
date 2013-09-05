@@ -50,12 +50,8 @@ define [
       @cells[col]?[row]
 
     update: ->
-      console.log 'update'
-
       for cell in @children
-        # console.log @getCellNeighbors.apply @, cell.position
         for i, neighbor of @getCellNeighbors.apply @, cell.position
-          # console.log i, neighbor
           if neighbor and !!Math.round cell.matrix[i]
             neighbor.toggle()
             neighbor.matrix = cell.matrix

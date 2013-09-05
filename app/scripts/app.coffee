@@ -29,9 +29,7 @@ define [
           @seq.set col, row, note + 20
 
       @stage.addChild @grid
-
       createjs.Ticker.addEventListener 'tick', @draw
-
 
       @output = new Output
 
@@ -40,13 +38,13 @@ define [
         steps: 8
         step: (notes) =>
           delay = 0 # play one note every quarter second
-          velocity = 127 # how hard the note hits
+          velocity = 127
           for note in notes
-            if note
-              # MIDI.noteOn 0, note, velocity, delay
-              # MIDI.noteOff 0, note, delay + 0.75
-              @output.play note, 500
+            @output.play note, 500 if note
 
+      # master clock
+      @clock = new Clock new webkitAudioContext,
+        tick: (value) => @seq.next()
 
       @setupControls()
 
@@ -59,8 +57,8 @@ define [
 
       # dat.gui controls
       defaults =
-        tempo: 100
-        play: => @seq.play()
+        tempo: 120
+        play: => @clock.play()
         resolution: '1/8'
 
       @gui = new GUI
@@ -68,15 +66,12 @@ define [
         .min(40)
         .max(200)
         .step(1)
-        .onChange (bpm) =>
-          @seq.tempo bpm
+        .onChange (bpm) => @clock.setTempo bpm
       @gui.add(defaults, 'play')
 
       values = ['1/16', '1/8', '1/4']
-      @gui.add(defaults, 'resolution', ['1/16', '1/8', '1/4'])
-        .onChange (val) =>
-          @seq.resolution values.indexOf(val)
+      @gui.add(defaults, 'resolution', values)
+        .onChange (val) => @clock.resolution values.indexOf(val)
 
     draw: =>
       @stage.update()
-

@@ -1,12 +1,11 @@
 define [
   'lodash'
-  'clock'
-], (_, Clock) ->
+], (_) ->
   'use strict'
 
   class Sequencer
     options:
-      step: (notes) ->
+      step: (notes) -> console.log notes
       steps: 16
       voices: 8
 
@@ -16,37 +15,11 @@ define [
 
     constructor: (options) ->
       @options = _.defaults options, @options
-
       @sequence = []
-      @sequence.push @newSequence() for i in [1..@options.steps]
-
-      @clock = new Clock new webkitAudioContext,
-        tempo: @options.tempo
-        tick: (value) =>
-          @next()
-          @options.step @sequence[@currentStep]
-
-    play: ->
-      @clock.play()
-      @
-
-    pause: ->
-      @
-
-    stop: ->
-      @
+      @sequence.push @createStep() for i in [1..@options.steps]
 
     steps: (steps) ->
       @options.steps = steps
-      # if steps > @sequence.length
-      @
-
-    tempo: (bpm) ->
-      @clock.setTempo bpm
-      @
-
-    resolution: (val) ->
-      @clock.resolution val
       @
 
     next: ->
@@ -54,13 +27,12 @@ define [
         @currentStep++
       else
         @currentStep = 0
+
+      @options.step @sequence[@currentStep]
       @
 
     set: (step, voice, note) ->
-      # console.log 'set', step, voice, note
       @sequence[step][voice] = note
 
-    # todo: Sequence class
-    newSequence: ->
+    createStep: ->
       null for i in [1..@options.voices]
-
