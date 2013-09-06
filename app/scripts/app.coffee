@@ -15,18 +15,21 @@ define [
     constructor: ->
       @stage = new createjs.Stage 'canvas'
       @scale = new Scale 'Dorian'
+
+      # grid
       @grid = new Grid
         rows: 8
         cols: 8
         cellWidth: 50
         cellHeight: 50
-        change: (col, row, value, active) =>
-          note = @scale.at Math.abs(row - @grid.options.rows) if active
-          console.log 'grid change:', col, row, value, active
-          console.log 'note:', note
-          @seq.set col, row, note + 20
-
+      @grid.addEventListener 'change', (e) =>
+        [col, row] = e.position
+        note = @scale.at Math.abs(row - @grid.options.rows) if e.active
+        console.log 'grid change:', col, row, e.value, e.active
+        console.log 'note:', note
+        @seq.set col, row, note + 20
       @stage.addChild @grid
+
       createjs.Ticker.addEventListener 'tick', @draw
 
       @output = new Output

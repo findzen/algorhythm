@@ -12,7 +12,6 @@ define [
       cellWidth: 10
       cellHeight: 10
       cellPadding: 2
-      change: (col, row, value, active) ->
 
     cells: []
 
@@ -28,10 +27,6 @@ define [
         width: @options.cellWidth
         height: @options.cellHeight
 
-      options =
-        change: (col, row, value, active) =>
-          @options.change col, row, value, active
-
       spacing = @options.cellPadding + props.width
 
       for row in [0..@options.rows - 1]
@@ -40,14 +35,17 @@ define [
           props.x = spacing * col
           props.y = spacing * row
 
-          cell = new Cell null, props, options
+          cell = new Cell null, props
+
+          # manually bubble event since createjs doesn't support this yet
+          cell.addEventListener 'change', (e) => @dispatchEvent e
+
           @addChild cell
 
           @cells[col] ?= []
           @cells[col].push cell
 
-    getChildAtCoord: (col, row) ->
-      @cells[col]?[row]
+    getChildAtCoord: (col, row) -> @cells[col]?[row]
 
     update: ->
       for cell in @children

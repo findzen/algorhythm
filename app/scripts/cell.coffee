@@ -12,7 +12,6 @@ define [
   class Cell extends createjs.Shape
     options:
       fill: 'darkred'
-      change: (col, row, value, active) ->
 
     matrix: null
 
@@ -28,7 +27,7 @@ define [
 
     index: -1
 
-    constructor: (graphics, props, options) ->
+    constructor: (graphics, props, options = {}) ->
       @options = _.defaults options, @options
       super
 
@@ -48,7 +47,12 @@ define [
       @active = !@active
       @value = Number(@active)
       @alpha = Number(!@active) + 0.5
-      @options.change @position[0], @position[1], @value, @active
+      # @options.change @position[0], @position[1], @value, @active
+      @dispatchEvent
+        type: 'change'
+        position: @position
+        value: @value
+        active: @active
 
     mod: (options) ->
       matrix = new ColorMatrix().adjustHue(180).adjustSaturation(100)
