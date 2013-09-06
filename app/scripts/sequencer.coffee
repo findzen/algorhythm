@@ -26,6 +26,7 @@ define [
         @currentStep++
       else
         @currentStep = 0
+        @dispatchEvent 'start'
 
       @dispatchEvent
         type: 'step'

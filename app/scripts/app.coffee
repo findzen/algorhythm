@@ -33,6 +33,7 @@ define [
 
       # sequencer
       @seq = new Sequencer steps: 8
+      @seq.addEventListener 'start', => @grid.update()
       @seq.addEventListener 'step', (e) =>
         for note in e.step
           @output.play note, 500 if note
