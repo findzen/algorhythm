@@ -36,7 +36,9 @@ define [
 
       @createMatrix()
 
-    createMatrix: (@matrix = []) ->
+    createMatrix: ->
+      @matrix = []
+
       for i in [1..MATRIX_SIZE]
         @matrix.push Math.round(Math.random())
 

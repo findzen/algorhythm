@@ -1,7 +1,7 @@
 define [
   'lodash'
   'createjs'
-  'cell'
+  'ui/cell'
 ], (_, createjs, Cell) ->
   'use strict'
 

@@ -4,7 +4,7 @@ define [
   'audiolib'
   'createjs'
   'clock'
-  'grid'
+  'ui/grid'
   'sequencer'
   'scale'
   'output'
