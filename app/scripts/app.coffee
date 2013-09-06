@@ -36,7 +36,7 @@ define [
       @seq.addEventListener 'start', => @grid.update()
       @seq.addEventListener 'step', (e) =>
         for note in e.step
-          @output.play note, 500 if note
+          @output.play note if note
 
       # master clock
       @clock = new Clock new webkitAudioContext

@@ -10,6 +10,7 @@ require.config
     color_matrix_filter: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrixFilter'
     audiolib: '../bower_components/audiolib.js.0.6.4/audiolib'
     midi_utils: '../bower_components/MIDIUtils/src/MIDIUtils'
+    gibberish: '../bower_components/Gibberish/scripts/build/gibberish_2.0'
 
   shim:
     gui:
@@ -28,6 +29,8 @@ require.config
       exports: 'createjs.ColorMatrixFilter'
     midi_utils:
       exports: 'MIDIUtils'
+    gibberish:
+      exports: 'Gibberish'
 
 require [
   'app'

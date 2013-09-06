@@ -14,7 +14,8 @@
     "dat.gui": "http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.js",
     "audiolib.js.0.6.4": "https://github.com/downloads/jussi-kalliokoski/audiolib.js/audiolib.js.0.6.4.zip",
     "music.js": "git://github.com/gregjopa/music.js.git",
-    "MIDIUtils": "git@github.com:sole/MIDIUtils.git#~0.0.2"
+    "MIDIUtils": "git@github.com:sole/MIDIUtils.git#~0.0.2",
+    "Gibberish": "git@github.com:charlieroberts/Gibberish.git"
   },
   "devDependencies": {}
 }
