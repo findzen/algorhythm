@@ -21,8 +21,6 @@ define [
 
     height: 10
 
-    filters: []
-
     active: false
 
     index: -1
@@ -47,14 +45,23 @@ define [
       @active = !@active
       @value = Number(@active)
       @alpha = Number(!@active) + 0.5
-      # @options.change @position[0], @position[1], @value, @active
       @dispatchEvent
         type: 'change'
         position: @position
         value: @value
         active: @active
 
-    mod: (options) ->
-      matrix = new ColorMatrix().adjustHue(180).adjustSaturation(100)
-      @filters.push new ColorMatrixFilter matrix
+    highlight: (apply = true) ->
+      if apply
+        matrix = new ColorMatrix().adjustHue(180).adjustSaturation(100)
+        @filters = [new ColorMatrixFilter matrix]
+      else
+        @filters = []
+      @cache 0, 0, @width, @height
+
+    reset: ->
+      @active = false
+      @value = 0
+      @alpha = 1
+      @filters = []
       @cache -50, -50, 100, 100

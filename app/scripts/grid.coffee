@@ -47,6 +47,19 @@ define [
 
     getChildAtCoord: (col, row) -> @cells[col]?[row]
 
+    getCol: (index) -> @cells[index]
+
+    getRow: (index) ->
+      row = []
+
+      for col in @cells
+        row.push col[index]
+
+      row
+
+    highlightCol: (index, apply = true) ->
+      cell.highlight apply for cell in @getCol index
+
     update: ->
       for cell in @children
         for i, neighbor of @getCellNeighbors.apply @, cell.position
@@ -62,6 +75,3 @@ define [
       right = @getChildAtCoord(col + 1, row)
 
       [up, down, left, right]
-
-
-

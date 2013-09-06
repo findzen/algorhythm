@@ -17,6 +17,7 @@ define [
       @options = _.defaults options, @options
       @sequence = []
       @sequence.push @createStep() for i in [1..@options.steps]
+      @currentStep = @options.steps - 1
 
     steps: (steps) ->
       @options.steps = steps
@@ -30,6 +31,7 @@ define [
 
       @dispatchEvent
         type: 'step'
+        index: @currentStep
         step: @sequence[@currentStep]
 
     set: (step, voice, note) ->

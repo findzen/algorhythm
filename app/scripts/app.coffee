@@ -35,9 +35,14 @@ define [
       @output = new Output
 
       # sequencer
-      @seq = new Sequencer steps: 8
+      steps = 8
+      @seq = new Sequencer steps: steps
       @seq.addEventListener 'start', => @grid.update()
       @seq.addEventListener 'step', (e) =>
+        prev = if e.index then e.index - 1 else steps - 1
+        @grid.highlightCol prev, false
+        @grid.highlightCol e.index
+
         for note in e.step
           @output.play note if note
 
