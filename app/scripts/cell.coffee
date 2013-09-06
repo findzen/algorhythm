@@ -35,7 +35,6 @@ define [
         .drawRect 0, 0, @width, @height
 
       @createMatrix()
-      @addEventListener 'click', (e) => @toggle()
 
     createMatrix: (@matrix = []) ->
       for i in [1..MATRIX_SIZE]

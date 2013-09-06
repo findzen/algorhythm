@@ -12,6 +12,7 @@ define [
       cellWidth: 10
       cellHeight: 10
       cellPadding: 2
+      mono: false
 
     cells: []
 
@@ -39,6 +40,12 @@ define [
 
           # manually bubble event since createjs doesn't support this yet
           cell.addEventListener 'change', (e) => @dispatchEvent e
+          cell.addEventListener 'click', (e) =>
+            # only allow one cell per column to be active if mono is true
+            if @options.mono and !e.target.active
+              for cell in @getCol e.target.position[0]
+                cell.toggle() if cell.active
+            e.target.toggle()
 
           @addChild cell
 
