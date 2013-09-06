@@ -37,7 +37,7 @@ define [
       # sequencer
       steps = 8
       @seq = new Sequencer steps: steps
-      @seq.addEventListener 'start', => @grid.update()
+      # @seq.addEventListener 'start', => @grid.update()
       @seq.addEventListener 'step', (e) =>
         prev = if e.index then e.index - 1 else steps - 1
         @grid.highlightCol prev, false
@@ -47,7 +47,7 @@ define [
           @output.play note if note
 
       # master clock
-      @clock = new Clock new webkitAudioContext
+      @clock = new Clock
       @clock.addEventListener 'tick', => @seq.next()
 
       @setupControls()
@@ -63,7 +63,6 @@ define [
       defaults =
         tempo: 120
         play: => @clock.play()
-        resolution: '1/8'
 
       @gui = new GUI
       @gui.add(defaults, 'tempo')
@@ -72,10 +71,6 @@ define [
         .step(1)
         .onChange (bpm) => @clock.setTempo bpm
       @gui.add(defaults, 'play')
-
-      values = ['1/16', '1/8', '1/4']
-      @gui.add(defaults, 'resolution', values)
-        .onChange (val) => @clock.resolution values.indexOf(val)
 
     draw: =>
       @stage.update()
