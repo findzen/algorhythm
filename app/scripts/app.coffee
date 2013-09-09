@@ -5,41 +5,44 @@ define [
   'createjs'
   'clock'
   'sequencer'
-  'scale'
   'ui/grid'
   'instruments/synth_lead'
   'instruments/drumkit_808'
-], ($, GUI, audioLib, createjs, Clock, Sequencer, Scale, Grid, SynthLead, Drumkit808) ->
+], ($, GUI, audioLib, createjs, Clock, Sequencer, Grid, SynthLead, Drumkit808) ->
   'use strict'
+
+  STEPS = 16
+  ROWS = 16
 
   class App
     constructor: ->
       @stage = new createjs.Stage 'canvas'
 
       # sequencer
-      @seq = new Sequencer steps: 8
+      @seq = new Sequencer steps: STEPS
       @seq.addEventListener 'end', => @grid.update()
       @seq.addEventListener 'step', (e) =>
-        prev = if e.index then e.index - 1 else 7
+        prev = if e.index then e.index - 1 else STEPS - 1
 
         @grid.highlightCol prev, false
         @grid.highlightCol e.index
 
         for note in e.step
-          @synth.play note if note
-
-      @scale = new Scale 'Dorian'
+          if note isnt undefined
+            @synth.play note
+            # @drums.play note
+            if note < 3 then @drums.play note
+            else @synth.play note
 
       # grid
       @grid = new Grid
-        rows: 16
-        cols: 8
+        rows: ROWS
+        cols: STEPS
         cellWidth: 50
         cellHeight: 50
       @grid.addEventListener 'change', (e) =>
-        console.log @, 'change', e
         [col, row] = e.position
-        note = @scale.at Math.abs(row - @grid.options.rows) if e.on
+        note = row if e.on
         @seq.set col, row, note
       @stage.addChild @grid
 
@@ -65,6 +68,9 @@ define [
       defaults =
         tempo: 120
         play: => @clock.play()
+        randomize: => @grid.randomize()
+        reverse: => @grid.reverse()
+        inverse: => @grid.inverse()
 
       @gui = new GUI
       @gui.add(defaults, 'tempo')
@@ -73,6 +79,9 @@ define [
         .step(1)
         .onChange (bpm) => @clock.setTempo bpm
       @gui.add(defaults, 'play')
+      @gui.add(defaults, 'randomize')
+      @gui.add(defaults, 'reverse')
+      @gui.add(defaults, 'inverse')
 
     draw: =>
       @stage.update()

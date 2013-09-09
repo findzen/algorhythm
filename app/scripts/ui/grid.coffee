@@ -94,6 +94,15 @@ define [
     getMatrix: ->
       @children.map (cell) -> Number(cell.isOn)
 
+    randomize: ->
+      @setMatrix([1..@children.length].map -> Math.random() * 2 | 0)
+
+    reverse: ->
+      @setMatrix @getMatrix().map (val) -> Math.abs val - 1
+
+    inverse: ->
+      @setMatrix @getMatrix().reverse()
+
     update: ->
       live = []
       die = []
