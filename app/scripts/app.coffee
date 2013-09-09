@@ -6,13 +6,14 @@ define [
   'clock'
   'sequencer'
   'ui/grid'
+  'instruments/bass'
   'instruments/synth_lead'
   'instruments/drumkit_808'
-], ($, GUI, audioLib, createjs, Clock, Sequencer, Grid, SynthLead, Drumkit808) ->
+], ($, GUI, audioLib, createjs, Clock, Sequencer, Grid, Bass, SynthLead, Drumkit808) ->
   'use strict'
 
   STEPS = 16
-  ROWS = 16
+  ROWS = 18
 
   class App
     constructor: ->
@@ -32,6 +33,7 @@ define [
             @synth.play note
             # @drums.play note
             if note < 3 then @drums.play note
+            else if note < 10 then @bass.play note
             else @synth.play note
 
       # grid
@@ -51,6 +53,7 @@ define [
       @clock.addEventListener 'tick', => @seq.next()
 
       # instruments
+      @bass = new Bass
       @synth = new SynthLead
       @drums = new Drumkit808
 
