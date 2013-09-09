@@ -3,7 +3,7 @@ require.config
     jquery: '../bower_components/jquery/jquery'
     lodash: '../bower_components/lodash/lodash'
     gui: '../bower_components/dat.gui/index'
-    createjs: '../bower_components/createjs-2013.05.14.min/index'
+    createjs: '../bower_components/EaselJS/lib/easeljs-0.6.1.min'
     musicjs: '../bower_components/music.js/music'
     filter: '../bower_components/EaselJS/src/easeljs/filters/Filter'
     color_matrix: '../bower_components/EaselJS/src/easeljs/filters/ColorMatrix'

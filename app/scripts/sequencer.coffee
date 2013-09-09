@@ -25,6 +25,7 @@ define [
     next: ->
       if @currentStep < @options.steps - 1
         @currentStep++
+        if @currentStep is @options.steps - 1 then @dispatchEvent 'end'
       else
         @currentStep = 0
         @dispatchEvent 'start'

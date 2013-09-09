@@ -28,23 +28,24 @@ define [
         width: @options.cellWidth
         height: @options.cellHeight
 
-      spacing = @options.cellPadding + props.width
+      spacingX = @options.cellPadding + props.width
+      spacingY = @options.cellPadding + props.height
 
       for row in [0..@options.rows - 1]
         for col in [0..@options.cols - 1]
           props.position = [col, row]
-          props.x = spacing * col
-          props.y = spacing * row
+          props.x = spacingX * col
+          props.y = spacingY * row
 
           cell = new Cell null, props
 
           # manually bubble event since createjs doesn't support this yet
           cell.addEventListener 'change', (e) => @dispatchEvent e
           cell.addEventListener 'click', (e) =>
-            # only allow one cell per column to be active if mono is true
-            if @options.mono and !e.target.active
+            # only allow one cell per column to be on if mono is true
+            if @options.mono and !e.target.isOn
               for cell in @getCol e.target.position[0]
-                cell.toggle() if cell.active
+                cell.toggle() if cell.isOn
             e.target.toggle()
 
           @addChild cell
@@ -52,7 +53,14 @@ define [
           @cells[col] ?= []
           @cells[col].push cell
 
-    getChildAtCoord: (col, row) -> @cells[col]?[row]
+    getChildAtCoord: (col, row, wrap = true) ->
+      if wrap
+        if col >= @options.cols then col = 0
+        if row >= @options.rows then row = 0
+        if col < 0 then col = @options.cols - 1
+        if row < 0 then row = @options.rows - 1
+
+      @cells[col]?[row]
 
     getCol: (index) -> @cells[index]
 
@@ -67,18 +75,38 @@ define [
     highlightCol: (index, apply = true) ->
       cell.highlight apply for cell in @getCol index
 
+    getNeighbors: (col, row) ->
+      n   = @getChildAtCoord col, row - 1
+      ne  = @getChildAtCoord col + 1, row - 1
+      e   = @getChildAtCoord col + 1, row
+      se  = @getChildAtCoord col + 1, row + 1
+      s   = @getChildAtCoord col, row + 1
+      sw  = @getChildAtCoord col - 1, row + 1
+      w   = @getChildAtCoord col - 1, row
+      nw  = @getChildAtCoord col - 1, row - 1
+
+      [n, ne, e, se, s, sw, w, nw]
+
+    setMatrix: (matrix) ->
+      for i, bool of matrix
+        if bool then @children[i].on() else @children[i].off()
+
+    getMatrix: ->
+      @children.map (cell) -> Number(cell.isOn)
+
     update: ->
+      live = []
+      die = []
+
       for cell in @children
-        for i, neighbor of @getCellNeighbors.apply @, cell.position
-          if neighbor and !!Math.round cell.matrix[i]
-            neighbor.toggle()
-            neighbor.matrix = cell.matrix
-            cell.createMatrix()
+        onNeighbors = @getNeighbors.apply(@, cell.position).filter (cell) ->
+          cell?.isOn
+        onCount = onNeighbors.length
 
-    getCellNeighbors: (col, row) ->
-      up = @getChildAtCoord(col, row - 1)
-      down = @getChildAtCoord(col, row + 1)
-      left = @getChildAtCoord(col - 1, row)
-      right = @getChildAtCoord(col + 1, row)
+        if cell.isOn and (onCount <= 1 or onCount >= 4)
+          die.push cell
+        else if !cell.isOn and onCount is 3
+          live.push cell
 
-      [up, down, left, right]
+      cell.off() for cell in die
+      cell.on() for cell in live

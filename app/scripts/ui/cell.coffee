@@ -7,50 +7,43 @@ define [
 ], (_, createjs, Filter, ColorMatrix, ColorMatrixFilter) ->
   'use strict'
 
-  MATRIX_SIZE = 4
-
   class Cell extends createjs.Shape
     options:
       fill: 'darkred'
-
-    matrix: null
-
-    value: 0
 
     width: 10
 
     height: 10
 
-    active: false
+    isOn: false
 
     index: -1
 
     constructor: (graphics, props, options = {}) ->
       @options = _.defaults options, @options
       super
-
       @set props
-
       @graphics.beginFill(@options.fill)
         .drawRect 0, 0, @width, @height
 
-      @createMatrix()
-
-    createMatrix: ->
-      @matrix = []
-
-      for i in [1..MATRIX_SIZE]
-        @matrix.push Math.round(Math.random())
-
     toggle: ->
-      @active = !@active
-      @value = Number(@active)
-      @alpha = Number(!@active) + 0.5
+      if @isOn then @off() else @on()
+
+    on: ->
+      @isOn = true
+      @alpha = 0.5
+      @onChange()
+
+    off: ->
+      @isOn = false
+      @alpha = 1
+      @onChange()
+
+    onChange: ->
       @dispatchEvent
         type: 'change'
         position: @position
-        value: @value
-        active: @active
+        on: @isOn
 
     highlight: (apply = true) ->
       if apply
@@ -61,7 +54,7 @@ define [
       @cache 0, 0, @width, @height
 
     reset: ->
-      @active = false
+      @isOn = false
       @value = 0
       @alpha = 1
       @filters = []

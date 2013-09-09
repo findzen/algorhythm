@@ -4,53 +4,55 @@ define [
   'audiolib'
   'createjs'
   'clock'
-  'ui/grid'
   'sequencer'
   'scale'
-  'output'
-], ($, GUI, audioLib, createjs, Clock, Grid, Sequencer, Scale, Output) ->
+  'ui/grid'
+  'instruments/synth_lead'
+  'instruments/drumkit_808'
+], ($, GUI, audioLib, createjs, Clock, Sequencer, Scale, Grid, SynthLead, Drumkit808) ->
   'use strict'
 
   class App
     constructor: ->
       @stage = new createjs.Stage 'canvas'
-      @scale = new Scale 'Dorian'
-
-      # grid
-      @grid = new Grid
-        rows: 8
-        cols: 8
-        cellWidth: 50
-        cellHeight: 50
-      @grid.addEventListener 'change', (e) =>
-        [col, row] = e.position
-        note = @scale.at Math.abs(row - @grid.options.rows) if e.active
-        console.log 'grid change:', col, row, e.value, e.active
-        console.log 'note:', note
-        @seq.set col, row, note + 20
-      @stage.addChild @grid
-
-      createjs.Ticker.addEventListener 'tick', @draw
-
-      @output = new Output
 
       # sequencer
-      steps = 8
-      @seq = new Sequencer steps: steps
-      # @seq.addEventListener 'start', => @grid.update()
+      @seq = new Sequencer steps: 8
+      @seq.addEventListener 'end', => @grid.update()
       @seq.addEventListener 'step', (e) =>
-        prev = if e.index then e.index - 1 else steps - 1
+        prev = if e.index then e.index - 1 else 7
+
         @grid.highlightCol prev, false
         @grid.highlightCol e.index
 
         for note in e.step
-          @output.play note if note
+          @synth.play note if note
+
+      @scale = new Scale 'Dorian'
+
+      # grid
+      @grid = new Grid
+        rows: 16
+        cols: 8
+        cellWidth: 50
+        cellHeight: 50
+      @grid.addEventListener 'change', (e) =>
+        console.log @, 'change', e
+        [col, row] = e.position
+        note = @scale.at Math.abs(row - @grid.options.rows) if e.on
+        @seq.set col, row, note
+      @stage.addChild @grid
 
       # master clock
       @clock = new Clock
       @clock.addEventListener 'tick', => @seq.next()
 
+      # instruments
+      @synth = new SynthLead
+      @drums = new Drumkit808
+
       @setupControls()
+      createjs.Ticker.addEventListener 'tick', @draw
 
     setupControls: ->
       $(document).on 'keyup', (e) =>

@@ -8,6 +8,7 @@ define [
     isPlaying: false
 
     constructor: ->
+      Gibberish.init()
       @seq = new Gibberish.Sequencer
         durations:[Gibberish.Time.beats(0.25)]
         values: [@tick]

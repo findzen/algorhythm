@@ -4,3 +4,4 @@ define ->
   # Base instrument class
   class Instrument
     play: (note) ->
+      # override
